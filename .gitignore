@@ -1,115 +1,104 @@
-# Compiled source #
-###################
-*.com
-*.dll
-*.exe
-*.o
-*.so
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-__javascript__/
-target/
+*$py.class
 
-# Git #
-#######
-.git
+# C extensions
+*.so
 
-# Packages #
-############
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
-*.db
-
-# OS generated files #
-######################
-.DS_Store
-ehthumbs.db
-Icon?
-Thumbs.db
-
-# Build files #
-###############
-MANIFEST.MF
-dependency-reduced-pom.xml
-
-# Distribution / packaging #
-############################
+# Distribution / packaging
 .Python
-env/
-bin/
 build/
 develop-eggs/
 dist/
+downloads/
 eggs/
+.eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
+wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Installer logs #
-##################
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Project files #
-#####################
-.ropeproject
-.mr.developer.cfg
-.project
-.pydevproject
-.classpath
-.externalToolBuilders
-.idea
-.project
-.settings
-build
-dist
-nbproject
-atlassian-ide-plugin.xml
-build.xml
-nb-configuration.xml
-*.iml
-*.ipr
-*.iws
-node_modules
-env
-.screeps-password
-.screeps-email
-config.json
-__py_build__/
-
-# Misc files #
-##############
-*.bak
-*.log
-*.pot
-docs/_build/
-*\ Notes.txt
-
-# Unit test / coverage reports #
-################################
+# Unit test / coverage reports
 htmlcov/
 .tox/
 .coverage
+.coverage.*
 .cache
 nosetests.xml
 coverage.xml
-/config.json
-/git-cloned/
-/markdown/
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/

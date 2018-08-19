@@ -1,10 +1,11 @@
 import harvester
+import MemoryHelper
+import ComputationController
+import Memento
 # defs is a package which claims to export all constants and some JavaScript objects, but in reality does
 #  nothing. This is useful mainly when using an editor like PyCharm, so that it 'knows' that things like Object, Creep,
 #  Game, etc. do exist.
 from defs import *
-
-#TESTTESTTEST2
 
 # These are currently required for Transcrypt in order to use the following names in JavaScript.
 # Without the 'noalias' pragma, each of the following would be translated into something like 'py_Infinity' or
@@ -23,6 +24,8 @@ def main():
     """
     Main game logic loop.
     """
+
+    print("tick")
 
     # Run each creep
     for name in Object.keys(Game.creeps):

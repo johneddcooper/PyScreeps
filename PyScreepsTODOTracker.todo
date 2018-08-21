@@ -1,3 +1,4 @@
 PyScreeps:
-  ☐ clean up print statements from memory testing
-  ☐ make computation task memory storage muti and generic
+ ☐ clean up print statements from memory testing
+ ☐ make computation task memory storage muti and generic
+ ☐ Implement goal oriented action planning (GOAP) for AI

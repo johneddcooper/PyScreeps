@@ -2,3 +2,12 @@ PyScreeps:
  ☐ clean up print statements from memory testing
  ☐ make computation task memory storage muti and generic
  ☐ Implement goal oriented action planning (GOAP) for AI
+
+ Memory:
+   ☐ Testing for is a gotten atribute doesnt exist (i.e bad path) and raise an exception?
+
+Resources:
+  https://gamedev.stackexchange.com/questions/136832/what-are-the-basics-of-implementing-a-goal-oriented-ai
+
+current task:
+  figure out why task queue is leaking / not running. suspect last added item is being added as head?

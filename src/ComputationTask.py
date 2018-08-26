@@ -2,6 +2,7 @@
 import Memento
 import itertools
 from HelperFunctions import cantor_pair
+
 counter = itertools.count()
 
 
@@ -13,9 +14,11 @@ class ComputationTask:
         """
         self.class_string = parent_class_string
         self.function_string = function_string
+        self.execute_after_string = None
         self.data = None
         self.delay = 0
         self.priority = 5
+        self.repeat = 0
         self.time_created = Game.time
         count = next(counter)
         try:
@@ -27,6 +30,16 @@ class ComputationTask:
     def execute(self, callback_function):
         return callback_function(self.data)
 
+    def execute_after(self, register_task_function, call_after_function):
+        print(self.repeat)
+        if self.repeat > 0:
+            print("reg repeat")
+            self.delay = self.repeat
+            self.time_created = Game.time
+            register_task_function(self)
+        if call_after_function is not None:
+            call_after_function(self)
+
     def get_memento(self):
         memento_dict = {
             "class_string": self.class_string,
@@ -34,7 +47,9 @@ class ComputationTask:
             "data": self.data,
             "delay": self.delay,
             "priority": self.priority,
-            "time_created": self.time_created
+            "time_created": self.time_created,
+            "repeat": self.repeat,
+            "execute_after_string": self.execute_after_string,
         }
         return memento_dict
 
@@ -48,4 +63,6 @@ def new_from_memento(memento):
     new_task.delay = memento.delay
     new_task.priority = memento.priority
     new_task.time_created = memento.time_created
+    new_task.repeat = memento.repeat
+    new_task.execute_after_string = memento.execute_after_string
     return new_task

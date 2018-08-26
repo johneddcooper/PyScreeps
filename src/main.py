@@ -17,6 +17,8 @@ __pragma__('noalias', 'set')
 __pragma__('noalias', 'type')
 __pragma__('noalias', 'update')
 
+print("Main reload")
+ComputationController.init()
 
 def main():
     """

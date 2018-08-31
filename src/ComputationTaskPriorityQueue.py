@@ -17,31 +17,35 @@ class ComputationTaskPriorityQueue:
             return self.runtime > other.runtime or self.runtime == other.runtime and self.priority > other.priority
 
         def __le__(self, other):
-            return self.runtime <= other.runtime or self.runtime == other.runtime and self.priority <= other.priority
+            return self.runtime < other.runtime or self.runtime == other.runtime and self.priority <= other.priority
 
         def __ge__(self, other):
-            return self.runtime >= other.runtime or self.runtime == other.runtime and self.priority >= other.priority
+            return self.runtime > other.runtime or self.runtime == other.runtime and self.priority >= other.priority
 
         def __eq__(self, other):
             # override eq operator to test for tasks that perform the same function
             # assumes other is a task, for checking if a task is in the priority queue
-            if not other.task:
-                return self.task.class_string == other.class_string and self.task.function_string == other.function_string
-            else:
-                return self.task.class_string == other.task.class_string and self.task.function_string == other.task.function_string
+            return self.task == other.task
 
     def __init__(self):
         self.priority_queue = []
         self.counter = itertools.count()
 
+    def __iter__(self):
+        return iter([item.task for item in self.priority_queue])
+
     def pop(self):
         # return the actual computation_task from the constructed (priority, count, computation_task) tuple
-        return heappop(self.priority_queue).task
+        item = heappop(self.priority_queue)
+        if item is not None:
+            return item.task
 
     def push(self, computation_task):
         heappush(self.priority_queue, ComputationTaskPriorityQueue.PriorityQueueItem(computation_task.time_created + computation_task.delay, computation_task.priority, computation_task))
 
     def head(self):
+        if len(self.priority_queue) == 0:
+            return None
         return self.priority_queue[0].task
 
     def empty(self):
@@ -78,9 +82,12 @@ def heappush(heap, val):
 
 
 def heappop(heap):
+    size = len(heap)
+    if size == 0:
+        return None
     ret = heap[0]
     last = heap.pop()
-    size = len(heap)
+    size -= 1
     if size == 0:
         return ret
     heap[0] = last

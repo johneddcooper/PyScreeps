@@ -3,7 +3,6 @@ import ComputationController
 # defs is a package which claims to export all constants and some JavaScript objects, but in reality does
 #  nothing. This is useful mainly when using an editor like PyCharm, so that it 'knows' that things like Object, Creep,
 #  Game, etc. do exist.
-from defs import *
 
 # These are currently required for Transcrypt in order to use the following names in JavaScript.
 # Without the 'noalias' pragma, each of the following would be translated into something like 'py_Infinity' or
@@ -18,14 +17,15 @@ __pragma__('noalias', 'type')
 __pragma__('noalias', 'update')
 
 print("Main reload")
-ComputationController.init()
+# ComputationController.init()
+
 
 def main():
     """
     Main game logic loop.
     """
-    print("tick", Game.time)
-    ComputationController.execute_tasks()
+    #print("tick", Game.time)
+    # ComputationController.execute_tasks()
     # ComputationController.execute_tasks()
 
     # Run each creep

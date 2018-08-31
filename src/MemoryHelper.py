@@ -1,38 +1,43 @@
-"""Memory helper class that will write things to screeps memory."""
+"""self.memory helper class that will write things to screeps memory."""
 
-from defs import *
+
 MEMORY_ID_STRING = "class_data"
 
 
 class MemoryHelper:
 
-    def __init__(self, class_id_string):
+    def __init__(self, class_id_string, memory):
         """
         Takes in a class_id_string that is used to seporate the data from other classes in memory.
+        Takes in a memory object (treated as a dict) that we can act upon
         Must be unique from other classes to avoid clobbering data.
         """
 
         self.class_id_string = class_id_string
-        if MEMORY_ID_STRING not in Memory:
-            Memory[MEMORY_ID_STRING] = {}
-        if self.class_id_string not in Memory[MEMORY_ID_STRING]:
-            Memory[MEMORY_ID_STRING][class_id_string] = {}
+        self.memory = memory
+        if MEMORY_ID_STRING not in self.memory:
+            self.memory[MEMORY_ID_STRING] = {}
+        if self.class_id_string not in self.memory[MEMORY_ID_STRING]:
+            self.memory[MEMORY_ID_STRING][class_id_string] = {}
 
     def set_memory_tree(self, data_dict):
         """Will overwrite the entirety of a classes memory in the game memory."""
-        Memory[MEMORY_ID_STRING][self.class_id_string] = data_dict
+        self.memory[MEMORY_ID_STRING][self.class_id_string] = data_dict
 
-    def get_memory_tree(self, path=None):
-        return Memory[MEMORY_ID_STRING][self.class_id_string]
+    def get_memory_tree(self):
+        return self.memory[MEMORY_ID_STRING][self.class_id_string]
 
     def get_item_at_path(self, path):
-        value = Memory[MEMORY_ID_STRING][self.class_id_string]
+        value = self.memory[MEMORY_ID_STRING][self.class_id_string]
         # Recurse through memory until we reach the desired memory item
         # TODO add checking for if bad path?
+        if len(path) == 0:
+            return value
+
         for item in to_path(path):
             value = value[item]
         return value
-        # return _.pick(Memory[MEMORY_ID_STRING][self.class_id_string], path)
+        # return _.pick(self.memory[MEMORY_ID_STRING][self.class_id_string], path)
 
     def remove_item_at_path(self, path):
         path = to_path(path)
@@ -40,15 +45,15 @@ class MemoryHelper:
         def _remove(value, path):
             # Recurses through object until at desired path, than sets object as new value
             if len(path) == 1:
-                del(value[path])
+                del(value[path[0]])
             else:
                 # If the next atribute of the path doesnt exist, create it
-                if path[:1] not in value:
-                    value[path[:1]] = {}
+                if path[:1][0] not in value:
+                    value[path[:1][0]] = {}
                 # Set the memory item to be the current path atrivute, recirse on next atribute in path
-                _remove(value[path[:1]], path[1:])
+                _remove(value[path[:1][0]], path[1:])
 
-        _remove(Memory[MEMORY_ID_STRING][self.class_id_string], path)
+        _remove(self.memory[MEMORY_ID_STRING][self.class_id_string], path)
 
     def set_item_at_path(self, path, new_value):
         path = to_path(path)
@@ -56,17 +61,18 @@ class MemoryHelper:
         def _replace(value, path):
             # Recurses through object until at desired path, than sets object as new value
             if len(path) == 1:
-                value[path] = new_value
+                value[path[0]] = new_value
             else:
                 # If the next atribute of the path doesnt exist, create it
-                if path[:1] not in value:
-                    value[path[:1]] = {}
+                if isinstance(value, dict):
+                    if path[:1][0] not in value:
+                        value[path[:1][0]] = {}
                 # Set the memory item to be the current path atrivute, recirse on next atribute in path
-                _replace(value[path[:1]], path[1:])
+                _replace(value[path[:1][0]], path[1:])
 
-        _replace(Memory[MEMORY_ID_STRING][self.class_id_string], path)
+        _replace(self.memory[MEMORY_ID_STRING][self.class_id_string], path)
 
-        # traverse_modify(Memory[MEMORY_ID_STRING][self.class_id_string], path, _replace)
+        # traverse_modify(self.memory[MEMORY_ID_STRING][self.class_id_string], path, _replace)
 
 
 # Credit to the below transversal algorithm goes to Vincent Driessen
@@ -138,8 +144,12 @@ def to_path(path):
         >>> to_path('foo.bar[]')
         ['foo', 'bar', []]
     """
-    if _.isArray(path):
-        return path  # already in list format
+    try:
+        if _.isArray(path):
+            return path  # already in list format
+    except NameError:  # If running tests and cant find lodash
+        if isinstance(path, list):
+            return path  # already in list format
 
     def _iter_path(path):
         for parts in path.split('[]'):

@@ -31,11 +31,11 @@ class ComputationTask:
         return callback_function(self.data)
 
     def execute_after(self, register_task_function, call_after_function):
-        print(self.repeat)
         if self.repeat > 0:
-            print("reg repeat")
             self.delay = self.repeat
             self.time_created = Game.time
+            count = next(counter)
+            self.uid = cantor_pair(Game.time, count)
             register_task_function(self)
         if call_after_function is not None:
             call_after_function(self)
@@ -50,6 +50,7 @@ class ComputationTask:
             "time_created": self.time_created,
             "repeat": self.repeat,
             "execute_after_string": self.execute_after_string,
+            "uid": self.uid,
         }
         return memento_dict
 

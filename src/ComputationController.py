@@ -16,22 +16,20 @@ task_queue = None
 
 
 def init():
-    print("initted")
+    print("Comp controller init")
     global memory_instance
     global task_queue
-    memory_instance = MemoryHelper.MemoryHelper("test_memory")
+    memory_instance = MemoryHelper.MemoryHelper("test_memory", Memory)
     if task_queue is None:
         retrive_tasks_from_memory()
     register_callback_function("ComputationController", "computation_task_cleanup", computation_task_cleanup)
     computation_task_cleanup_task = ComputationTask.ComputationTask("ComputationController", "computation_task_cleanup")
-    computation_task_cleanup_task.repeat = 15
-    computation_task_cleanup_task.delay = 15
-    print(len(task_queue))
-    if not task_queue.__contains__(computation_task_cleanup_task):
-        print("not in")
-        register_computation_task(computation_task_cleanup_task)
-    else:
-        print("In")
+    computation_task_cleanup_task.repeat = 20
+    computation_task_cleanup_task.delay = 20
+    # if not task_queue.__contains__(computation_task_cleanup_task):
+    #     register_computation_task(computation_task_cleanup_task)
+    # else:
+    #     pass
 
 
 def register_callback_function(class_string, function_string, call_function):
@@ -47,38 +45,43 @@ def get_callback_function(class_string, function_string):
 def register_computation_task(computation_task):
     global task_queue
     global memory_instance
-    print("registering comp task")
+    print("registering comp task with delay {} and repeat {} to run at t {} as uid {}".format(computation_task.delay, computation_task.repeat, computation_task.time_created + computation_task.delay, computation_task.uid))
     if task_queue is None:
         retrive_tasks_from_memory()
     if computation_task.class_string not in callback_functions or computation_task.function_string not in callback_functions[computation_task.class_string]:
         print("Callback function for added computation_task not registered")
         return
     task_queue.push(computation_task)
+
+    print("task_queue_mem.{}".format(computation_task.uid))
     memory_instance.set_item_at_path("task_queue_mem.{}".format(computation_task.uid), computation_task)
-    print("pushed on to queue now of len ", len(task_queue))
+    for k, v in _.pairs(memory_instance.get_item_at_path("task_queue_mem")):
+        print(k)
 
 
 def retrive_tasks_from_memory():
+    print("retrive_tasks_from_memory")
     global task_queue
     if task_queue is None:
         task_queue = ComputationTaskPriorityQueue()
     for uid, task in _.pairs(memory_instance.get_item_at_path("task_queue_mem")):
         task_queue.push(task)
+    print("done ret tasks, queue of len", len(task_queue))
 
 
 def execute_tasks():
     global task_queue
     if task_queue is None:
-        retrive_tasks_from_memory()
+        retrive_tasks_from_memory
     time = Game.time
     while not task_queue.empty():
         task = ComputationTask.new_from_memento(task_queue.head())
         if task.delay + task.time_created <= time:
+            print("Task del {}, time created {}, time {}, uid".format(task.delay, task.time_created, time, task.uid))
             task.execute(get_callback_function(task.class_string, task.function_string))
             task.execute_after(register_computation_task, get_callback_function(task.class_string, task.execute_after_string))
-            task_queue.pop()
             memory_instance.remove_item_at_path("task_queue_mem.{}".format(task.uid))
-            print("exe queue size", len(task_queue))
+            task_queue.pop()
         else:
             break
 

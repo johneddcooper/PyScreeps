@@ -1,5 +1,4 @@
 PyScreeps:
- ☐ clean up print statements from memory testing
  ☐ make computation task memory storage muti and generic
  ☐ Implement goal oriented action planning (GOAP) for AI
 
@@ -11,3 +10,70 @@ Resources:
 
 current task:
   figure out why task queue is leaking / not running. suspect last added item is being added as head?
+
+Structure:
+(GOAP loop)
+  cost as t or energy cost? each action gets to return its cost as a dict {time, energy, materials, etc} and each requirements gets to decide what cost to prioritize
+
+
+    stratagists decide what needs to be done
+      1. increse resource input
+      2. increse defence level
+      3. blocade colony next
+      4. attack colony next door
+      5. harrass colony next door
+    planners decides how to do them, they report requirements to higher and
+
+Reactive creep death or proactive creep death? Based on CPU limit, than on cost calculations?
+  cost of reactive
+    harvester = harvester travel time to next energy * gather capacity < harvester cost / createtime + travel time
+
+    carrier when approching death dont take tasks greater than life length + buffer unless
+
+Energy: register energy source (e/t) with consumer (ave e/t), calculate best harvester and carrier build?
+
+harvest levels = (3)7e/t (7)14e/t (20)25e/t
+carrier levels = (3)2e/d/t, (4)8e/d/t, (15)14e/d/t
+  s1
+4
+  c 5e/t, s1=5/4 e/d/t, s2=5/20 edt
+2
+  c 10e/t, s1=10/6 edt, s2=10/18 edt
+8
+  c 3e/t, s1 = 3/14 edt, s2=3/10 edt
+2
+  s2
+8
+  c 8e/t, s1=8/24 edt, s2=8/8 edt
+
+
+Increse room to lv 2
+  defence to lv 1
+    enough standing energy to generate army based on threat
+    walls / barriers in place to health x
+    Towers / turrets to lv 1
+    key path points built
+      from point (grid or list (energy, spawner, other points)), to point, priority
+  infastructure to lv 1
+     road plan to key path points
+  maximize minimum of carrier capacity and energy income - energy overhead
+     carrier capacity = ave dist every energy source to every energy consumer / carrier speed * carrier cap
+     energy income = # active harvesters * harvest capacity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,8 @@ PyScreeps:
 
 Resources:
   https://gamedev.stackexchange.com/questions/136832/what-are-the-basics-of-implementing-a-goal-oriented-ai
-
+  https://bencbartlett.wordpress.com/2017/12/19/screeps-0-a-brief-history-of-game-time/
+  https://github.com/bonzaiferroni/bonzAI/wiki/A-new-phase-for-bonzAI:-update()
 current task:
   figure out why task queue is leaking / not running. suspect last added item is being added as head?
 
